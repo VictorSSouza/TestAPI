@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CatalogAPI.Models
 {
@@ -25,6 +26,8 @@ namespace CatalogAPI.Models
         public float Amount { get; set; }
         public DateTime DateRegistration { get; set; }
         public int CategoryId { get; set; }
+
+        [JsonIgnore]
         public Category? Category { get; set; }
     }
 }
