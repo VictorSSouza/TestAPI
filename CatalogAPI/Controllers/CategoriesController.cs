@@ -1,5 +1,6 @@
 ﻿using CatalogAPI.Data;
 using CatalogAPI.Models;
+using CatalogAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,12 @@ namespace CatalogAPI.Controllers
         public CategoriesController(CatalogAppDbContext context)
         {
             _context = context;
+        }
+
+        [HttpGet("{name}")]
+        public ActionResult<string> GetGreeting([FromServices] IMyService myService, string name)
+        {
+            return myService.Greeting(name);
         }
 
         [HttpGet("produtos")]
