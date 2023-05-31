@@ -17,15 +17,15 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("produtos")]
-        public ActionResult<IEnumerable<Category>> GetCategoriesProducts()
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategoriesProducts()
         {
 
             try
             {
-                return _context.Categories
+                return await _context.Categories
                 .Include(c => c.Products)
                 .Where(c => c.Id <= 5)
-                .ToList();
+                .ToListAsync();
             }
             catch (Exception)
             {
@@ -37,11 +37,11 @@ namespace CatalogAPI.Controllers
         }
         
         [HttpGet]
-        public ActionResult<IEnumerable<Category>> Get()
+        public async Task<ActionResult<IEnumerable<Category>>> Get()
         {
             try
             {
-                return _context.Categories.AsNoTracking().ToList();
+                return await _context.Categories.AsNoTracking().ToListAsync();
             }
             catch (Exception)
             {
@@ -53,11 +53,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name="ObterCategoria")]
-        public ActionResult<Category> GetCategory(int id)
+        public async Task<ActionResult<Category>> GetCategory(int id)
         {
             try
             {
-                var category = _context.Categories.FirstOrDefault(x => x.Id == id);
+                var category =  await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (category == null)
                 {
@@ -76,7 +76,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post(Category category)
+        public async Task<ActionResult> Post(Category category)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace CatalogAPI.Controllers
                 }
 
                 _context.Categories.Add(category);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return new CreatedAtRouteResult("ObterCategoria", new { id = category.Id }, category);
             }
@@ -100,7 +100,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult Put(int id,Category category)
+        public async Task<ActionResult> Put(int id,Category category)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace CatalogAPI.Controllers
                 }
 
                 _context.Entry(category).State = EntityState.Modified;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return Ok(category);
             }
@@ -124,11 +124,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                var category = _context.Categories.FirstOrDefault(x => x.Id == id);
+                var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (category == null)
                 {
@@ -136,7 +136,7 @@ namespace CatalogAPI.Controllers
                 }
 
                 _context.Categories.Remove(category);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return Ok(category);
             }

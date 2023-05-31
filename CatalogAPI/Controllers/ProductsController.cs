@@ -17,11 +17,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> Get()
+        public async Task<ActionResult<IEnumerable<Product>>> Get()
         {
             try
             {
-                var products = _context.Products.AsNoTracking().ToList();
+                var products = await _context.Products.AsNoTracking().ToListAsync();
 
                 if (products is null)
                 {
@@ -39,11 +39,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name ="ObterProduto")]
-        public ActionResult<Product> GetProduct(int id)
+        public async Task<ActionResult<Product>> GetProduct(int id)
         {
             try
             {
-                var product = _context.Products.FirstOrDefault(p => p.Id == id);
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
                 if (product is null)
                 {
@@ -60,7 +60,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post(Product product)
+        public async Task<ActionResult> Post(Product product)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace CatalogAPI.Controllers
                 }
 
                 _context.Products.Add(product);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return new CreatedAtRouteResult("ObterProduto", new { id = product.Id }, product);
             }
@@ -83,7 +83,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult Put(int id, Product product)
+        public async Task<ActionResult> Put(int id, Product product)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace CatalogAPI.Controllers
                 }
 
                 _context.Entry(product).State = EntityState.Modified;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return Ok(product);
             }
@@ -106,11 +106,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                var produto = _context.Products.FirstOrDefault(x => x.Id == id);
+                var produto = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (produto is null)
                 {
@@ -118,7 +118,7 @@ namespace CatalogAPI.Controllers
                 }
 
                 _context.Products.Remove(produto);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return Ok(produto);
             }
