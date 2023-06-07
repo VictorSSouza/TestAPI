@@ -1,4 +1,5 @@
 using CatalogAPI.Data;
+using CatalogAPI.Filters;
 using CatalogAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -12,14 +13,6 @@ namespace CatalogAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
-
-            builder.Services.AddDbContext<CatalogAppDbContext>(options =>
-                            options.UseMySql(mySqlConnection,
-                            ServerVersion.AutoDetect(mySqlConnection)));
-
-            builder.Services.AddTransient<IMyService, MyService>();
-
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -29,6 +22,16 @@ namespace CatalogAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+
+
+            builder.Services.AddDbContext<CatalogAppDbContext>(options =>
+                            options.UseMySql(mySqlConnection,
+                            ServerVersion.AutoDetect(mySqlConnection)));
+
+            builder.Services.AddTransient<IMyService, MyService>();
+            builder.Services.AddScoped<APILoggingFilter>();
 
             var app = builder.Build();
 
