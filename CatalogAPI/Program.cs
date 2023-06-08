@@ -1,4 +1,5 @@
 using CatalogAPI.Data;
+using CatalogAPI.Extensions;
 using CatalogAPI.Filters;
 using CatalogAPI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,9 @@ namespace CatalogAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            // Adiciona middleware de tratamento de erros
+            app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
 
