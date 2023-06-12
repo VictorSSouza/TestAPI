@@ -1,6 +1,7 @@
 using CatalogAPI.Data;
 using CatalogAPI.Extensions;
 using CatalogAPI.Filters;
+using CatalogAPI.Logging;
 using CatalogAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -33,6 +34,11 @@ namespace CatalogAPI
 
             builder.Services.AddTransient<IMyService, MyService>();
             builder.Services.AddScoped<APILoggingFilter>();
+
+            builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
+            {
+                LogLevel = LogLevel.Information
+            }));
 
             var app = builder.Build();
 
