@@ -2,6 +2,7 @@ using CatalogAPI.Data;
 using CatalogAPI.Extensions;
 using CatalogAPI.Filters;
 using CatalogAPI.Logging;
+using CatalogAPI.Repositories;
 using CatalogAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -33,7 +34,8 @@ namespace CatalogAPI
                             ServerVersion.AutoDetect(mySqlConnection)));
 
             builder.Services.AddTransient<IMyService, MyService>();
-            builder.Services.AddScoped<APILoggingFilter>();
+            // builder.Services.AddScoped<APILoggingFilter>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
             {

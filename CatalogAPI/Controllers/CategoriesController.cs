@@ -1,9 +1,7 @@
-﻿using CatalogAPI.Data;
-using CatalogAPI.Models;
+﻿using CatalogAPI.Models;
+using CatalogAPI.Repositories;
 using CatalogAPI.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CatalogAPI.Controllers
 {
@@ -11,10 +9,10 @@ namespace CatalogAPI.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly CatalogAppDbContext _context;
-        public CategoriesController(CatalogAppDbContext context)
+        private readonly IUnitOfWork _uow;
+        public CategoriesController(IUnitOfWork context)
         {
-            _context = context;
+            _uow = context;
         }
 
         [HttpGet("{name}")]
@@ -24,15 +22,14 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("produtos")]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategoriesProducts()
+        public  ActionResult<IEnumerable<Category>> GetCategoriesProducts()
         {
 
             try
             {
-                return await _context.Categories
-                .Include(c => c.Products)
-                .Where(c => c.Id <= 5)
-                .ToListAsync();
+                return  _uow.CategoryRepository
+                .GetCategoriesProducts()
+                .ToList();
             }
             catch (Exception)
             {
@@ -44,11 +41,11 @@ namespace CatalogAPI.Controllers
         }
         
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> Get()
+        public  ActionResult<IEnumerable<Category>> Get()
         {
             try
             {
-                return await _context.Categories.AsNoTracking().ToListAsync();
+                return  _uow.CategoryRepository.Get().ToList();
             }
             catch (Exception)
             {
@@ -60,11 +57,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name="ObterCategoria")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public  ActionResult<Category> GetCategory(int id)
         {
             try
             {
-                var category =  await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+                var category =   _uow.CategoryRepository.GetById(x => x.Id == id);
 
                 if (category == null)
                 {
@@ -83,7 +80,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Category category)
+        public  ActionResult Post([FromBody] Category category)
         {
             try
             {
@@ -92,8 +89,8 @@ namespace CatalogAPI.Controllers
                     return BadRequest("Dados inválidos.");
                 }
 
-                _context.Categories.Add(category);
-                await _context.SaveChangesAsync();
+                _uow.CategoryRepository.Add(category);
+                _uow.Commit();
 
                 return new CreatedAtRouteResult("ObterCategoria", new { id = category.Id }, category);
             }
@@ -107,7 +104,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int id,Category category)
+        public  ActionResult Put(int id, [FromBody] Category category)
         {
             try
             {
@@ -116,8 +113,8 @@ namespace CatalogAPI.Controllers
                     return BadRequest("Dados inválidos.");
                 }
 
-                _context.Entry(category).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                _uow.CategoryRepository.Update(category);
+                _uow.Commit();
 
                 return Ok(category);
             }
@@ -131,19 +128,19 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
+        public  ActionResult Delete(int id)
         {
             try
             {
-                var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+                var category =  _uow.CategoryRepository.GetById(x => x.Id == id);
 
                 if (category == null)
                 {
                     return NotFound("Categoria não localizada!");
                 }
 
-                _context.Categories.Remove(category);
-                await _context.SaveChangesAsync();
+                _uow.CategoryRepository.Delete(category);
+                _uow.Commit();
 
                 return Ok(category);
             }

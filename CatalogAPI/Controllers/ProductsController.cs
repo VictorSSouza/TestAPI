@@ -1,9 +1,6 @@
-﻿using CatalogAPI.Data;
-using CatalogAPI.Filters;
-using CatalogAPI.Models;
-using Microsoft.AspNetCore.Http;
+﻿using CatalogAPI.Models;
+using CatalogAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CatalogAPI.Controllers
 {
@@ -11,19 +8,25 @@ namespace CatalogAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly CatalogAppDbContext _context;
-        public ProductsController(CatalogAppDbContext context)
+        private readonly IUnitOfWork _uow;
+        public ProductsController(IUnitOfWork context)
         {
-            _context = context;
+            _uow = context;
         }
 
+        [HttpGet("ordempreco")]
+        public ActionResult<IEnumerable<Product>> GetProductsPerPrice() 
+        {
+            return _uow.ProductRepository.GetProductsPerPrice().ToList();
+        }
+        
         [HttpGet]
-        [ServiceFilter(typeof(APILoggingFilter))]
-        public async Task<ActionResult<IEnumerable<Product>>> Get()
+        //[ServiceFilter(typeof(APILoggingFilter))]
+        public  ActionResult<IEnumerable<Product>> Get()
         {
             try
             {
-                var products = await _context.Products.AsNoTracking().ToListAsync();
+                var products =  _uow.ProductRepository.Get().ToList();
 
                 if (products is null)
                 {
@@ -41,11 +44,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name ="ObterProduto")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public  ActionResult<Product> GetProduct(int id)
         {
             try
             {
-                var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+                var product =  _uow.ProductRepository.GetById(x => x.Id == id);
 
                 if (product is null)
                 {
@@ -62,7 +65,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Product product)
+        public  ActionResult Post([FromBody] Product product)
         {
             try
             {
@@ -71,8 +74,8 @@ namespace CatalogAPI.Controllers
                     return BadRequest();
                 }
 
-                _context.Products.Add(product);
-                await _context.SaveChangesAsync();
+                _uow.ProductRepository.Add(product);
+                _uow.Commit();
 
                 return new CreatedAtRouteResult("ObterProduto", new { id = product.Id }, product);
             }
@@ -85,7 +88,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int id, Product product)
+        public  ActionResult Put(int id, [FromBody] Product product)
         {
             try
             {
@@ -94,8 +97,8 @@ namespace CatalogAPI.Controllers
                     return BadRequest();
                 }
 
-                _context.Entry(product).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                _uow.ProductRepository.Update(product);
+                _uow.Commit();
 
                 return Ok(product);
             }
@@ -108,19 +111,19 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
+        public  ActionResult Delete(int id)
         {
             try
             {
-                var produto = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+                var produto = _uow.ProductRepository.GetById(x => x.Id == id);
 
                 if (produto is null)
                 {
                     return NotFound("Produto não localizado!");
                 }
 
-                _context.Products.Remove(produto);
-                await _context.SaveChangesAsync();
+                _uow.ProductRepository.Delete(produto);
+                _uow.Commit();
 
                 return Ok(produto);
             }

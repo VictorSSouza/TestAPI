@@ -11,7 +11,7 @@ namespace CatalogAPI.Repositories
         }
         public IEnumerable<Category> GetCategoriesProducts()
         {
-            return Get().Include(x => x.Products);
+            return Get().Include(x => x.Products).Where(c => c.Id <= 5);
         }
     }
 }
