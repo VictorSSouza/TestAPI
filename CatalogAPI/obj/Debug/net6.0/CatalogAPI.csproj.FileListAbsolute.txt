@@ -37,3 +37,5 @@ C:\temp\CatalogAPI\CatalogAPI\obj\Debug\net6.0\refint\CatalogAPI.dll
 C:\temp\CatalogAPI\CatalogAPI\obj\Debug\net6.0\CatalogAPI.pdb
 C:\temp\CatalogAPI\CatalogAPI\obj\Debug\net6.0\CatalogAPI.genruntimeconfig.cache
 C:\temp\CatalogAPI\CatalogAPI\obj\Debug\net6.0\ref\CatalogAPI.dll
+C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\AutoMapper.dll
+C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

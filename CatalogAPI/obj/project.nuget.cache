@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "eqvYvGrISRoWFrMcRb7tXp+AuWLx+tXp7XWIGvcybhBx9fSWBU/jC4HDHq5Nsh24OaQrvHtP4NUn+QCjt8Jpvg==",
+  "dgSpecHash": "HJ13UWu1o2Gr06t8JJlxQY8iOf6bAKjyzm8bUf9U0vP4RjKkIZlqAAh6xnIWVQk2RuDBgcnDiMYopZ+M6hkE8g==",
   "success": true,
   "projectFilePath": "C:\\temp\\CatalogAPI\\CatalogAPI\\CatalogAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\victo\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\victo\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\victo\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\victo\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\victo\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.0\\microsoft.entityframeworkcore.6.0.0.nupkg.sha512",
     "C:\\Users\\victo\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\6.0.0\\microsoft.entityframeworkcore.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\victo\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\6.0.0\\microsoft.entityframeworkcore.analyzers.6.0.0.nupkg.sha512",

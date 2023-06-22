@@ -1,4 +1,6 @@
-﻿using CatalogAPI.Models;
+﻿using AutoMapper;
+using CatalogAPI.DTOs;
+using CatalogAPI.Models;
 using CatalogAPI.Repositories;
 using CatalogAPI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +12,11 @@ namespace CatalogAPI.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
-        public CategoriesController(IUnitOfWork context)
+	    private readonly IMapper _mapper;
+        public CategoriesController(IUnitOfWork context, IMapper mapper)
         {
             _uow = context;
+	        _mapper = mapper;
         }
 
         [HttpGet("{name}")]
@@ -22,14 +26,15 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("produtos")]
-        public  ActionResult<IEnumerable<Category>> GetCategoriesProducts()
+        public  ActionResult<IEnumerable<CategoryDTO>> GetCategoriesProducts()
         {
 
             try
             {
-                return  _uow.CategoryRepository
-                .GetCategoriesProducts()
-                .ToList();
+                var categoriesP = _uow.CategoryRepository.GetCategoriesProducts().ToList();
+		        var categoriesPDTO = _mapper.Map<List<CategoryDTO>>(categoriesP);
+		
+		        return categoriesPDTO;
             }
             catch (Exception)
             {
@@ -41,11 +46,14 @@ namespace CatalogAPI.Controllers
         }
         
         [HttpGet]
-        public  ActionResult<IEnumerable<Category>> Get()
+        public  ActionResult<IEnumerable<CategoryDTO>> Get()
         {
             try
             {
-                return  _uow.CategoryRepository.Get().ToList();
+		        var categories = _uow.CategoryRepository.Get().ToList();
+		        var categoriesDTO = _mapper.Map<List<CategoryDTO>>(categories);
+
+                return categoriesDTO;
             }
             catch (Exception)
             {
@@ -57,7 +65,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name="ObterCategoria")]
-        public  ActionResult<Category> GetCategory(int id)
+        public  ActionResult<CategoryDTO> GetCategory(int id)
         {
             try
             {
@@ -67,8 +75,9 @@ namespace CatalogAPI.Controllers
                 {
                     return NotFound("Categoria não encontrada!");
                 }
-
-                return Ok(category);
+		
+		        var categoryDTO = _mapper.Map<CategoryDTO>(category);
+                return Ok(categoryDTO);
             }
             catch (Exception)
             {
@@ -80,19 +89,22 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPost]
-        public  ActionResult Post([FromBody] Category category)
+        public  ActionResult Post([FromBody] CategoryDTO categoryDTO)
         {
             try
             {
-                if (category == null)
+                if (categoryDTO == null)
                 {
                     return BadRequest("Dados inválidos.");
                 }
-
+		
+		        var category = _mapper.Map<Category>(categoryDTO);
                 _uow.CategoryRepository.Add(category);
                 _uow.Commit();
 
-                return new CreatedAtRouteResult("ObterCategoria", new { id = category.Id }, category);
+		        var categoryDto = _mapper.Map<CategoryDTO>(category);
+
+                return new CreatedAtRouteResult("ObterCategoria", new { id = category.Id }, categoryDto);
             }
             catch (Exception)
             {
@@ -104,19 +116,20 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public  ActionResult Put(int id, [FromBody] Category category)
+        public  ActionResult Put(int id, [FromBody] CategoryDTO categoryDTO)
         {
             try
             {
-                if (id != category.Id)
+                if (id != categoryDTO.Id)
                 {
                     return BadRequest("Dados inválidos.");
                 }
 
+		        var category = _mapper.Map<Category>(categoryDTO);
                 _uow.CategoryRepository.Update(category);
                 _uow.Commit();
 
-                return Ok(category);
+                return Ok();
             }
             catch (Exception)
             {
@@ -141,8 +154,9 @@ namespace CatalogAPI.Controllers
 
                 _uow.CategoryRepository.Delete(category);
                 _uow.Commit();
-
-                return Ok(category);
+		
+		        var categoryDTO = _mapper.Map<CategoryDTO>(category);
+                return Ok(categoryDTO);
             }
             catch (Exception)
             {

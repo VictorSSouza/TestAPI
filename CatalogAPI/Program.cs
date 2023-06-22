@@ -1,4 +1,6 @@
+using AutoMapper;
 using CatalogAPI.Data;
+using CatalogAPI.DTOs.Mappings;
 using CatalogAPI.Extensions;
 using CatalogAPI.Filters;
 using CatalogAPI.Logging;
@@ -41,6 +43,15 @@ namespace CatalogAPI
             {
                 LogLevel = LogLevel.Information
             }));
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            builder.Services.AddSingleton(mapper);
+
 
             var app = builder.Build();
 
