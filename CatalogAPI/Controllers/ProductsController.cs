@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using CatalogAPI.DTOs;
 using CatalogAPI.Models;
+using CatalogAPI.Pagination;
 using CatalogAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CatalogAPI.Controllers
 {
@@ -19,25 +21,36 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("ordempreco")]
-        public ActionResult<IEnumerable<ProductDTO>> GetProductsPerPrice() 
+        public ActionResult<IEnumerable<ProductDTO>> GetProductsPerPrice()
         {
             var products = _uow.ProductRepository.GetProductsPerPrice().ToList();
             var productsDTO = _mapper.Map<List<ProductDTO>>(products);
             return productsDTO;
         }
-        
+
         [HttpGet]
         //[ServiceFilter(typeof(APILoggingFilter))]
-        public  ActionResult<IEnumerable<ProductDTO>> Get()
+        public ActionResult<IEnumerable<ProductDTO>> Get([FromQuery] ProductsParameters parameters)
         {
             try
             {
-                var products =  _uow.ProductRepository.Get().ToList();
+                var products = _uow.ProductRepository.GetProducts(parameters);
 
                 if (products is null)
                 {
                     return NotFound("Produtos não localizados!");
                 }
+
+                var metadata = new
+                {
+                    products.TotalCount,
+                    products.PageSize,
+                    products.CurrentPage,
+                    products.TotalPages,
+                    products.HasNext,
+                    products.HasPrevious
+                };
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
 
                 var productsDTO = _mapper.Map<List<ProductDTO>>(products);
                 return productsDTO;
@@ -48,15 +61,15 @@ namespace CatalogAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                   "Ocorreu um problema ao tratar sua solicitação.");
             }
-            
+
         }
 
-        [HttpGet("{id:int}", Name ="ObterProduto")]
-        public  ActionResult<ProductDTO> GetProduct(int id)
+        [HttpGet("{id:int}", Name = "ObterProduto")]
+        public ActionResult<ProductDTO> GetProduct(int id)
         {
             try
             {
-                var product =  _uow.ProductRepository.GetById(x => x.Id == id);
+                var product = _uow.ProductRepository.GetById(x => x.Id == id);
 
                 if (product is null)
                 {
@@ -76,7 +89,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPost]
-        public  ActionResult Post([FromBody] ProductDTO productDTO)
+        public ActionResult Post([FromBody] ProductDTO productDTO)
         {
             try
             {
@@ -103,7 +116,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public  ActionResult Put(int id, [FromBody] ProductDTO productDTO)
+        public ActionResult Put(int id, [FromBody] ProductDTO productDTO)
         {
             try
             {
@@ -128,7 +141,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public  ActionResult Delete(int id)
+        public ActionResult Delete(int id)
         {
             try
             {
