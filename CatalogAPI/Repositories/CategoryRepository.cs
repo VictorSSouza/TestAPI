@@ -10,13 +10,13 @@ namespace CatalogAPI.Repositories
         public CategoryRepository(CatalogAppDbContext context) : base(context)
         {
         }
-        public PagedList<Category> GetCategories(CategoriesParameters parameters)
+        public async Task<PagedList<Category>> GetCategories(CategoriesParameters parameters)
         {
-            return PagedList<Category>.ToPagedList(Get().OrderBy(x => x.Name), parameters.PageSize, parameters.PageNumber);
+            return await PagedList<Category>.ToPagedList(Get().OrderBy(x => x.Name), parameters.PageSize, parameters.PageNumber);
         }
-        public IEnumerable<Category> GetCategoriesProducts()
+        public async Task<IEnumerable<Category>> GetCategoriesProducts()
         {
-            return Get().Include(x => x.Products).Where(c => c.Id <= 5);
+            return await Get().Include(x => x.Products).Where(c => c.Id <= 5).ToListAsync();
         }
     }
 }

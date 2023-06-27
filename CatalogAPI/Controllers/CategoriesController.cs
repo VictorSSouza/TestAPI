@@ -28,12 +28,12 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("produtos")]
-        public  ActionResult<IEnumerable<CategoryDTO>> GetCategoriesProducts()
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategoriesProducts()
         {
 
             try
             {
-                var categoriesP = _uow.CategoryRepository.GetCategoriesProducts().ToList();
+                var categoriesP = await _uow.CategoryRepository.GetCategoriesProducts();
 		        var categoriesPDTO = _mapper.Map<List<CategoryDTO>>(categoriesP);
 		
 		        return categoriesPDTO;
@@ -48,11 +48,15 @@ namespace CatalogAPI.Controllers
         }
         
         [HttpGet]
-        public  ActionResult<IEnumerable<CategoryDTO>> Get([FromQuery] CategoriesParameters parameters)
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> Get([FromQuery] CategoriesParameters parameters)
         {
             try
             {
-		        var categories = _uow.CategoryRepository.GetCategories(parameters);
+		        var categories = await _uow.CategoryRepository.GetCategories(parameters);
+			if(categories is null)
+			{
+				return NotFound("Categorias não localizadas!");
+			}
 
                 var metadata = new
                 {
@@ -79,11 +83,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name="ObterCategoria")]
-        public  ActionResult<CategoryDTO> GetCategory(int id)
+        public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
             try
             {
-                var category =   _uow.CategoryRepository.GetById(x => x.Id == id);
+                var category = await _uow.CategoryRepository.GetById(x => x.Id == id);
 
                 if (category == null)
                 {
@@ -103,7 +107,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPost]
-        public  ActionResult Post([FromBody] CategoryDTO categoryDTO)
+        public async Task<ActionResult> Post([FromBody] CategoryDTO categoryDTO)
         {
             try
             {
@@ -114,7 +118,7 @@ namespace CatalogAPI.Controllers
 		
 		        var category = _mapper.Map<Category>(categoryDTO);
                 _uow.CategoryRepository.Add(category);
-                _uow.Commit();
+                await _uow.Commit();
 
 		        var categoryDto = _mapper.Map<CategoryDTO>(category);
 
@@ -130,7 +134,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public  ActionResult Put(int id, [FromBody] CategoryDTO categoryDTO)
+        public async Task<ActionResult> Put(int id, [FromBody] CategoryDTO categoryDTO)
         {
             try
             {
@@ -141,7 +145,7 @@ namespace CatalogAPI.Controllers
 
 		        var category = _mapper.Map<Category>(categoryDTO);
                 _uow.CategoryRepository.Update(category);
-                _uow.Commit();
+                await _uow.Commit();
 
                 return Ok();
             }
@@ -155,11 +159,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public  ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                var category =  _uow.CategoryRepository.GetById(x => x.Id == id);
+                var category = await _uow.CategoryRepository.GetById(x => x.Id == id);
 
                 if (category == null)
                 {
@@ -167,7 +171,7 @@ namespace CatalogAPI.Controllers
                 }
 
                 _uow.CategoryRepository.Delete(category);
-                _uow.Commit();
+                await _uow.Commit();
 		
 		        var categoryDTO = _mapper.Map<CategoryDTO>(category);
                 return Ok(categoryDTO);

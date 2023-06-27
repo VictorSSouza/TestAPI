@@ -21,20 +21,20 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("ordempreco")]
-        public ActionResult<IEnumerable<ProductDTO>> GetProductsPerPrice()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsPerPrice()
         {
-            var products = _uow.ProductRepository.GetProductsPerPrice().ToList();
+            var products = await _uow.ProductRepository.GetProductsPerPrice();
             var productsDTO = _mapper.Map<List<ProductDTO>>(products);
             return productsDTO;
         }
 
         [HttpGet]
         //[ServiceFilter(typeof(APILoggingFilter))]
-        public ActionResult<IEnumerable<ProductDTO>> Get([FromQuery] ProductsParameters parameters)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> Get([FromQuery] ProductsParameters parameters)
         {
             try
             {
-                var products = _uow.ProductRepository.GetProducts(parameters);
+                var products = await _uow.ProductRepository.GetProducts(parameters);
 
                 if (products is null)
                 {
@@ -65,11 +65,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name = "ObterProduto")]
-        public ActionResult<ProductDTO> GetProduct(int id)
+        public async Task<ActionResult<ProductDTO>> GetProduct(int id)
         {
             try
             {
-                var product = _uow.ProductRepository.GetById(x => x.Id == id);
+                var product = await _uow.ProductRepository.GetById(x => x.Id == id);
 
                 if (product is null)
                 {
@@ -89,7 +89,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] ProductDTO productDTO)
+        public async Task<ActionResult> Post([FromBody] ProductDTO productDTO)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace CatalogAPI.Controllers
                 var product = _mapper.Map<Product>(productDTO);
 
                 _uow.ProductRepository.Add(product);
-                _uow.Commit();
+                await _uow.Commit();
 
                 var productDto = _mapper.Map<ProductDTO>(product);
 
@@ -116,7 +116,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult Put(int id, [FromBody] ProductDTO productDTO)
+        public async Task<ActionResult> Put(int id, [FromBody] ProductDTO productDTO)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace CatalogAPI.Controllers
                 var product = _mapper.Map<Product>(productDTO);
 
                 _uow.ProductRepository.Update(product);
-                _uow.Commit();
+                await _uow.Commit();
 
                 return Ok();
             }
@@ -141,11 +141,11 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                var product = _uow.ProductRepository.GetById(x => x.Id == id);
+                var product = await _uow.ProductRepository.GetById(x => x.Id == id);
 
                 if (product is null)
                 {
@@ -153,7 +153,7 @@ namespace CatalogAPI.Controllers
                 }
 
                 _uow.ProductRepository.Delete(product);
-                _uow.Commit();
+                await _uow.Commit();
 
                 var productDTO = _mapper.Map<ProductDTO>(product);
                 return Ok(productDTO);
