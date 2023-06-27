@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using CatalogAPI.DTOs;
 using CatalogAPI.Models;
+using CatalogAPI.Pagination;
 using CatalogAPI.Repositories;
 using CatalogAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CatalogAPI.Controllers
 {
@@ -46,11 +48,23 @@ namespace CatalogAPI.Controllers
         }
         
         [HttpGet]
-        public  ActionResult<IEnumerable<CategoryDTO>> Get()
+        public  ActionResult<IEnumerable<CategoryDTO>> Get([FromQuery] CategoriesParameters parameters)
         {
             try
             {
-		        var categories = _uow.CategoryRepository.Get().ToList();
+		        var categories = _uow.CategoryRepository.GetCategories(parameters);
+
+                var metadata = new
+                {
+                    categories.TotalCount,
+                    categories.PageSize,
+                    categories.CurrentPage,
+                    categories.TotalPages,
+                    categories.HasNext,
+                    categories.HasPrevious
+                };
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
+
 		        var categoriesDTO = _mapper.Map<List<CategoryDTO>>(categories);
 
                 return categoriesDTO;

@@ -1,5 +1,6 @@
 ﻿using CatalogAPI.Data;
 using CatalogAPI.Models;
+using CatalogAPI.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace CatalogAPI.Repositories
@@ -8,6 +9,10 @@ namespace CatalogAPI.Repositories
     {
         public CategoryRepository(CatalogAppDbContext context) : base(context)
         {
+        }
+        public PagedList<Category> GetCategories(CategoriesParameters parameters)
+        {
+            return PagedList<Category>.ToPagedList(Get().OrderBy(x => x.Name), parameters.PageSize, parameters.PageNumber);
         }
         public IEnumerable<Category> GetCategoriesProducts()
         {
