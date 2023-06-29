@@ -6,6 +6,7 @@ using CatalogAPI.Filters;
 using CatalogAPI.Logging;
 using CatalogAPI.Repositories;
 using CatalogAPI.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -34,6 +35,10 @@ namespace CatalogAPI
             builder.Services.AddDbContext<CatalogAppDbContext>(options =>
                             options.UseMySql(mySqlConnection,
                             ServerVersion.AutoDetect(mySqlConnection)));
+
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                            .AddEntityFrameworkStores<CatalogAppDbContext>()
+                            .AddDefaultTokenProviders();
 
             builder.Services.AddTransient<IMyService, MyService>();
             // builder.Services.AddScoped<APILoggingFilter>();
