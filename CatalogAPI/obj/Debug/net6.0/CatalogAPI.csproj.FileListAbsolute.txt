@@ -47,3 +47,8 @@ C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.Extensions.DependencyIn
 C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
 C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
 C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
