@@ -4,6 +4,8 @@ using CatalogAPI.Models;
 using CatalogAPI.Pagination;
 using CatalogAPI.Repositories;
 using CatalogAPI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -11,6 +13,7 @@ namespace CatalogAPI.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoriesController : ControllerBase
     {
         private readonly IUnitOfWork _uow;

@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace CatalogAPI.Controllers
 {
@@ -11,11 +15,13 @@ namespace CatalogAPI.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IConfiguration _configuration;
 
-        public AuthorizeController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AuthorizeController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -54,13 +60,49 @@ namespace CatalogAPI.Controllers
 
             if (result.Succeeded)
             {
-                return Ok();
+                return Ok(GenerateToken(userInfo));
             }
             else
             {
                 ModelState.AddModelError(string.Empty, "Login Inválido");
                 return BadRequest(ModelState);
             }
+        }
+
+        private UserToken GenerateToken(UserDTO userInfo)
+        {
+            // informacoes do usuario definidas
+            var claims = new[]
+            {
+            new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email),
+            new Claim("myPet", "Chico"),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            // chave com base em um algoritmo simetrico
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"]));
+            // assinatura digital do token usando o algoritmo Hmac e a chave privada
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            // tempo de expiracao do token
+            var expiration = _configuration["TokenConfiguration:ExpireHours"];
+            var expirationTime = DateTime.UtcNow.AddHours(double.Parse(expiration));
+
+            // classe que representa e gera o token Jwt
+            JwtSecurityToken token = new JwtSecurityToken(
+              issuer: _configuration["TokenConfiguration:Issuer"],
+              audience: _configuration["TokenConfiguration:Audience"],
+              claims: claims,
+              expires: expirationTime,
+              signingCredentials: credentials);
+
+            return new UserToken()
+            {
+                Authenticated = true,
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expiration = expirationTime,
+                Message = "Token JWT OK"
+            };
         }
     }
 }
