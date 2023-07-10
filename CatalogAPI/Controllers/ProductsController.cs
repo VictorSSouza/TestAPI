@@ -12,6 +12,7 @@ namespace CatalogAPI.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    // para ativar o cors comente a linha abaixo com '//' antes do primeiro '['
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ProductsController : ControllerBase
     {
@@ -24,6 +25,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("ordempreco")]
+	    //[EnableCors("PermitirApiRequest")] // request apenas nesse metodo
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsPerPrice()
         {
             var products = await _uow.ProductRepository.GetProductsPerPrice();
@@ -32,7 +34,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet]
-        //[ServiceFilter(typeof(APILoggingFilter))]
+        //[ServiceFilter(typeof(APILoggingFilter))] // ativacao de servico para registrar login do metodo Get
         public async Task<ActionResult<IEnumerable<ProductDTO>>> Get([FromQuery] ProductsParameters parameters)
         {
             try

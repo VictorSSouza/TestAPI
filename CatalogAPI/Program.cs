@@ -92,7 +92,7 @@ namespace CatalogAPI
 		            });
 
             builder.Services.AddTransient<IMyService, MyService>();
-            // builder.Services.AddScoped<APILoggingFilter>();
+            // builder.Services.AddScoped<APILoggingFilter>(); ativacao para servico de filtro de log
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
@@ -108,7 +108,17 @@ namespace CatalogAPI
             IMapper mapper = mappingConfig.CreateMapper();
             builder.Services.AddSingleton(mapper);
 
+            // politica cors via Atributo
+            /*builder.Services.AddCors(options =>
+	        {
+		        options.AddPolicy("PermitirApiRequest",
+		            builder =>
+		            builder.WithOrigins("https://apirequest.io").WithMethods("GET")
+		        );
+	        });*/
 
+            builder.Services.AddCors(); // ativacao via Middleware
+	    
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -125,6 +135,15 @@ namespace CatalogAPI
 
             app.UseAuthorization();
 
+            // Politica CORS restritiva via Middleware
+            /*app.UseCors(opt => opt.
+		        WithOrigins("https://apirequest.io").WithMethods("GET")
+	        );*/
+
+            // app.UseCors(); // ativacao via Atributo
+            app.UseCors( opt =>
+                opt.AllowAnyOrigin().WithMethods("GET") // aceita qualquer origem apenas os metodos get
+            );
 
             app.MapControllers();
 

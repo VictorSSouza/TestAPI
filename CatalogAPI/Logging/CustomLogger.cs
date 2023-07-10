@@ -30,7 +30,8 @@
 
         private void WriteTextInFile(string message)
         {
-            string filePathLog = @"c:\temp\log\Victor_log.txt";
+            // Para teste pode ser utilizado "c:\"
+            string filePathLog = @"c:\temp\log\Victor_log.txt"; // define onde o logs vão ser escritos
             using (StreamWriter sw = new StreamWriter(filePathLog, true)) 
             {
                 try

@@ -6,6 +6,7 @@ using CatalogAPI.Repositories;
 using CatalogAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -13,7 +14,9 @@ namespace CatalogAPI.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    // para ativar o cors comente a linha abaixo com '//' antes do primeiro '['
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
+    //[EnableCors("PermitirApiRequest")] // request em todos os metodos get 
     public class CategoriesController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
@@ -86,6 +89,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name="ObterCategoria")]
+	    //[EnableCors("PermitirApiRequest")] // request mais especifico, apenas uma categoria 
         public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
             try

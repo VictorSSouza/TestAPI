@@ -55,3 +55,4 @@ C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.d
 C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
 C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\System.Web.Cors.dll
