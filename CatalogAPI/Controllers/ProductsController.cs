@@ -24,6 +24,10 @@ namespace CatalogAPI.Controllers
             _mapper = mapper;
         }
 
+	    /// <summary>
+	    /// Retorna uma lista de produtos em ordem crescente
+	    /// </summary>
+	    /// <returns>Lista de produtos</returns>
         [HttpGet("ordempreco")]
 	    //[EnableCors("PermitirApiRequest")] // request apenas nesse metodo
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsPerPrice()
@@ -33,6 +37,10 @@ namespace CatalogAPI.Controllers
             return productsDTO;
         }
 
+	    /// <summary>
+	    /// Retorna uma lista de produtos
+	    /// </summary>
+	    /// <returns>Lista de objetos Produtos</returns>
         [HttpGet]
         //[ServiceFilter(typeof(APILoggingFilter))] // ativacao de servico para registrar login do metodo Get
         public async Task<ActionResult<IEnumerable<ProductDTO>>> Get([FromQuery] ProductsParameters parameters)
@@ -69,6 +77,11 @@ namespace CatalogAPI.Controllers
 
         }
 
+	    /// <summary>
+	    /// Retorna um produto
+	    /// </summary>
+	    /// <param name ="id">Codigo do Produto</param>
+	    /// <returns>Objeto Produto</returns>
         [HttpGet("{id:int}", Name = "ObterProduto")]
         public async Task<ActionResult<ProductDTO>> GetProduct(int id)
         {
@@ -93,6 +106,24 @@ namespace CatalogAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Adicionar um produto
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///	Post /Products
+        ///	{
+        ///	    "id" : 1,
+        ///	    "name" : "Produto de teste",
+        ///	    "description" : "descrição do produto",
+        ///	    "price" : 10.00,
+        ///	    "imageUrl" : "foto_produto.png",
+        ///	    "categoryId" : 1
+        ///	}
+        /// </remarks>
+        /// <param name ="productDTO">Objeto Produto</param>
+        /// <returns>Objeto Produto adicionado</returns>
+        /// <remarks>Retorna o objeto Produto adicionado</remarks>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ProductDTO productDTO)
         {
@@ -120,6 +151,22 @@ namespace CatalogAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Modificar um produto
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///	Put /Products
+        ///	{
+        ///	    "name" : "Produto alterado",
+        ///	    "description" : "descrição do produto alterado",
+        ///	    "price" : 9.90,
+        ///	    "imageUrl" : "foto_produto(2).png",
+        ///	    "categoryId" : 1
+        ///	}
+        /// </remarks>
+        /// <returns>Status 200 e string</returns>
+        /// <remarks>Retorna status 200 e messagem string Produto modificado</remarks>
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(int id, [FromBody] ProductDTO productDTO)
         {
@@ -135,7 +182,7 @@ namespace CatalogAPI.Controllers
                 _uow.ProductRepository.Update(product);
                 await _uow.Commit();
 
-                return Ok();
+                return Ok("Produto modificado");
             }
             catch (Exception)
             {
@@ -145,6 +192,12 @@ namespace CatalogAPI.Controllers
             }
         }
 
+	    /// <summary>
+	    /// Excluir um produto
+	    /// </summary>
+	    /// <param name ="id">Codigo do Produto</param>
+	    /// <returns>Status 200 e objeto Produto excluido</returns>
+	    /// <remarks>Retorna status 200 e objeto Produto excluido</remarks>
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {

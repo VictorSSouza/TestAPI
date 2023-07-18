@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -33,7 +34,7 @@ namespace CatalogAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
 	        {
-	    	    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CatalogAPI", Version = "v1"});
+	    	    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CatalogAPI", Version = "v1", Description = "Catálogo de Categorias e Produtos"});
 	
 		        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
 		        {
@@ -59,7 +60,11 @@ namespace CatalogAPI
                         new string[] {}
                     }
 		         });
-	        });
+                // Adiciona um arquivo para comentarios xml
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
             string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 

@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CatalogAPI</name>
+    </assembly>
+    <members>
+        <member name="M:CatalogAPI.Controllers.AuthorizeController.RegisterUser(CatalogAPI.DTOs.UserDTO)">
+            <summary>
+            Registra um novo usuário
+            </summary>
+            <param name ="model">Objeto do tipo UserDTO</param>
+            <returns>Status 200</returns>
+            <remarks>Retorna o status 200</remarks>
+        </member>
+        <member name="M:CatalogAPI.Controllers.AuthorizeController.Login(CatalogAPI.DTOs.UserDTO)">
+            <summary>
+            Verifica as credenciais de um usuário
+            </summary>
+            <param name ="userInfo">Objeto do tipo UserDTO</param>
+            <returns>Status 200 e o token para o cliente</returns>
+            <remarks>Retorna o status 200 e um novo token para o cliente</remarks>
+        </member>
+        <member name="M:CatalogAPI.Controllers.CategoriesController.GetCategoriesProducts">
+            <summary>
+            Retorna uma lista de categorias com produtos
+            </summary>
+            <returns>lista de objetos Categorias incluindo os objetos Produtos</returns>  
+        </member>
+        <member name="M:CatalogAPI.Controllers.CategoriesController.Get(CatalogAPI.Pagination.CategoriesParameters)">
+            <summary>
+            Retorna uma lista de categorias
+            </summary>
+            <returns>lista de objetos Categorias</returns>       
+        </member>
+        <member name="M:CatalogAPI.Controllers.CategoriesController.GetCategory(System.Int32)">
+            <summary>
+            Retorna uma categoria
+            </summary>
+            <param name ="id">Codigo da Categoria</param>
+            <returns>Objeto Categoria</returns>
+        </member>
+        <member name="M:CatalogAPI.Controllers.CategoriesController.Post(CatalogAPI.DTOs.CategoryDTO)">
+            <summary>
+            Adicionar uma categoria
+            </summary>
+            <remarks>
+            Exemplo de request:
+            Post /Categories
+            {
+                "id" : 1,
+                "name" : "Categoria de teste",
+                "imageUrl" : "foto_categoria.png"
+            }
+            </remarks>
+            <param name ="categoryDTO">Objeto Categoria</param>
+            <returns>Objeto Categoria adicionado</returns>
+            <remarks>Retorna objeto Categoria adicionado</remarks>
+        </member>
+        <member name="M:CatalogAPI.Controllers.CategoriesController.Put(System.Int32,CatalogAPI.DTOs.CategoryDTO)">
+            <summary>
+            Modificar uma categoria
+            </summary>
+            <remarks>
+            Exemplo de request:
+            Put /Categories
+            {
+                "name" : "Categoria alterada",
+                "imageUrl" : "foto_categoria.png"
+            }
+            </remarks>
+            <returns>Status 200 e objeto Categoria modificado</returns>
+            <remarks>Retorna status 200 e objeto Categoria modificado</remarks>
+        </member>
+        <member name="M:CatalogAPI.Controllers.CategoriesController.Delete(System.Int32)">
+            <summary>
+            Excluir uma categoria
+            </summary>
+            <param name ="id">Codigo da Categoria</param>
+            <returns>Status 200 e objeto Categoria excluido</returns>
+            <remarks>Retorna status 200 e objeto Categoria excluido</remarks>
+        </member>
+        <member name="M:CatalogAPI.Controllers.ProductsController.GetProductsPerPrice">
+            <summary>
+            Retorna uma lista de produtos em ordem crescente
+            </summary>
+            <returns>Lista de produtos</returns>
+        </member>
+        <member name="M:CatalogAPI.Controllers.ProductsController.Get(CatalogAPI.Pagination.ProductsParameters)">
+            <summary>
+            Retorna uma lista de produtos
+            </summary>
+            <returns>Lista de objetos Produtos</returns>
+        </member>
+        <member name="M:CatalogAPI.Controllers.ProductsController.GetProduct(System.Int32)">
+            <summary>
+            Retorna um produto
+            </summary>
+            <param name ="id">Codigo do Produto</param>
+            <returns>Objeto Produto</returns>
+        </member>
+        <member name="M:CatalogAPI.Controllers.ProductsController.Post(CatalogAPI.DTOs.ProductDTO)">
+            <summary>
+            Adicionar um produto
+            </summary>
+            <remarks>
+            Exemplo de request:
+            Post /Products
+            {
+                "id" : 1,
+                "name" : "Produto de teste",
+                "description" : "descrição do produto",
+                "price" : 10.00,
+                "imageUrl" : "foto_produto.png",
+                "categoryId" : 1
+            }
+            </remarks>
+            <param name ="productDTO">Objeto Produto</param>
+            <returns>Objeto Produto adicionado</returns>
+            <remarks>Retorna o objeto Produto adicionado</remarks>
+        </member>
+        <member name="M:CatalogAPI.Controllers.ProductsController.Put(System.Int32,CatalogAPI.DTOs.ProductDTO)">
+            <summary>
+            Modificar um produto
+            </summary>
+            <remarks>
+            Exemplo de request:
+            Put /Products
+            {
+                "name" : "Produto alterado",
+                "description" : "descrição do produto alterado",
+                "price" : 9.90,
+                "imageUrl" : "foto_produto(2).png",
+                "categoryId" : 1
+            }
+            </remarks>
+            <returns>Status 200 e string</returns>
+            <remarks>Retorna status 200 e messagem string Produto modificado</remarks>
+        </member>
+        <member name="M:CatalogAPI.Controllers.ProductsController.Delete(System.Int32)">
+            <summary>
+            Excluir um produto
+            </summary>
+            <param name ="id">Codigo do Produto</param>
+            <returns>Status 200 e objeto Produto excluido</returns>
+            <remarks>Retorna status 200 e objeto Produto excluido</remarks>
+        </member>
+    </members>
+</doc>

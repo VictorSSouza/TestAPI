@@ -33,6 +33,10 @@ namespace CatalogAPI.Controllers
             return myService.Greeting(name);
         }
 
+	    /// <summary>
+	    /// Retorna uma lista de categorias com produtos
+	    /// </summary>
+	    /// <returns>lista de objetos Categorias incluindo os objetos Produtos</returns>  
         [HttpGet("produtos")]
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategoriesProducts()
         {
@@ -52,7 +56,11 @@ namespace CatalogAPI.Controllers
             }
             
         }
-        
+ 
+	    /// <summary>
+	    /// Retorna uma lista de categorias
+	    /// </summary>
+	    /// <returns>lista de objetos Categorias</returns>       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> Get([FromQuery] CategoriesParameters parameters)
         {
@@ -88,7 +96,12 @@ namespace CatalogAPI.Controllers
             
         }
 
-        [HttpGet("{id:int}", Name="ObterCategoria")]
+	    /// <summary>
+	    /// Retorna uma categoria
+	    /// </summary>
+	    /// <param name ="id">Codigo da Categoria</param>
+	    /// <returns>Objeto Categoria</returns>
+        [HttpGet("{id:int}", Name = "ObterCategoria")]
 	    //[EnableCors("PermitirApiRequest")] // request mais especifico, apenas uma categoria 
         public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
@@ -113,6 +126,21 @@ namespace CatalogAPI.Controllers
             
         }
 
+	    /// <summary>
+	    /// Adicionar uma categoria
+	    /// </summary>
+	    /// <remarks>
+	    /// Exemplo de request:
+	    ///	Post /Categories
+	    ///	{
+	    ///	    "id" : 1,
+	    ///	    "name" : "Categoria de teste",
+	    ///	    "imageUrl" : "foto_categoria.png"
+	    ///	}
+	    /// </remarks>
+	    /// <param name ="categoryDTO">Objeto Categoria</param>
+	    /// <returns>Objeto Categoria adicionado</returns>
+	    /// <remarks>Retorna objeto Categoria adicionado</remarks>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CategoryDTO categoryDTO)
         {
@@ -140,6 +168,19 @@ namespace CatalogAPI.Controllers
             
         }
 
+	    /// <summary>
+	    /// Modificar uma categoria
+	    /// </summary>
+	    /// <remarks>
+	    /// Exemplo de request:
+	    ///	Put /Categories
+	    ///	{
+	    ///	    "name" : "Categoria alterada",
+	    ///	    "imageUrl" : "foto_categoria.png"
+	    ///	}
+	    /// </remarks>
+	    /// <returns>Status 200 e objeto Categoria modificado</returns>
+	    /// <remarks>Retorna status 200 e objeto Categoria modificado</remarks>
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(int id, [FromBody] CategoryDTO categoryDTO)
         {
@@ -154,7 +195,7 @@ namespace CatalogAPI.Controllers
                 _uow.CategoryRepository.Update(category);
                 await _uow.Commit();
 
-                return Ok();
+                return Ok("Categoria modificada");
             }
             catch (Exception)
             {
@@ -165,6 +206,12 @@ namespace CatalogAPI.Controllers
             
         }
 
+	    /// <summary>
+	    /// Excluir uma categoria
+	    /// </summary>
+	    /// <param name ="id">Codigo da Categoria</param>
+	    /// <returns>Status 200 e objeto Categoria excluido</returns>
+	    /// <remarks>Retorna status 200 e objeto Categoria excluido</remarks>
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {

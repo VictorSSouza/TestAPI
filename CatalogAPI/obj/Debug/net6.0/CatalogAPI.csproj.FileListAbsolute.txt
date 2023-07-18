@@ -56,3 +56,4 @@ C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authenticati
 C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
 C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\System.Web.Cors.dll
+C:\temp\CatalogAPI\CatalogAPI\bin\Debug\net6.0\CatalogAPI.xml

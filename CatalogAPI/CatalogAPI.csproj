@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>C:\temp\CatalogAPI\CatalogAPI\CatalogAPI.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

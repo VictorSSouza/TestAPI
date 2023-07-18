@@ -30,6 +30,12 @@ namespace CatalogAPI.Controllers
             return $"AuthorizeController :: Acesso em: {DateTime.Now.ToLongDateString()}";
         }
 
+	    /// <summary>
+	    /// Registra um novo usuário
+	    /// </summary>
+	    /// <param name ="model">Objeto do tipo UserDTO</param>
+	    /// <returns>Status 200</returns>
+	    /// <remarks>Retorna o status 200</remarks>
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser([FromBody] UserDTO model)
         {
@@ -52,6 +58,12 @@ namespace CatalogAPI.Controllers
             return Ok();
         }
 
+	    /// <summary>
+	    /// Verifica as credenciais de um usuário
+	    /// </summary>
+	    /// <param name ="userInfo">Objeto do tipo UserDTO</param>
+	    /// <returns>Status 200 e o token para o cliente</returns>
+	    /// <remarks>Retorna o status 200 e um novo token para o cliente</remarks>
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] UserDTO userInfo)
         {
