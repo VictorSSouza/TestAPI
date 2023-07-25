@@ -12,6 +12,8 @@ using System.Text.Json;
 
 namespace CatalogAPI.Controllers
 {
+    [ApiConventionType(typeof(DefaultApiConventions))]
+    [Produces("application/json")]
     [Route("[controller]")]
     [ApiController]
     // para ativar o cors comente a linha abaixo com '//' antes do primeiro '['
@@ -67,11 +69,11 @@ namespace CatalogAPI.Controllers
             try
             {
 		        var categories = await _uow.CategoryRepository.GetCategories(parameters);
-			if(categories is null)
-			{
-				return NotFound("Categorias não localizadas!");
-			}
-
+			    if(categories is null)
+			    {
+				    return NotFound("Categorias não localizadas!");
+			    }
+                // dados anonimizados para criar uma response customizada no header para paginacao
                 var metadata = new
                 {
                     categories.TotalCount,
@@ -82,7 +84,7 @@ namespace CatalogAPI.Controllers
                     categories.HasPrevious
                 };
                 Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
-
+                
 		        var categoriesDTO = _mapper.Map<List<CategoryDTO>>(categories);
 
                 return categoriesDTO;
@@ -102,7 +104,7 @@ namespace CatalogAPI.Controllers
 	    /// <param name ="id">Codigo da Categoria</param>
 	    /// <returns>Objeto Categoria</returns>
         [HttpGet("{id:int}", Name = "ObterCategoria")]
-	    //[EnableCors("PermitirApiRequest")] // request mais especifico, apenas uma categoria 
+        //[EnableCors("PermitirApiRequest")] // request mais especifico, apenas uma categoria 
         public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
             try

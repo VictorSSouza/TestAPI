@@ -9,6 +9,7 @@ using System.Text;
 
 namespace CatalogAPI.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthorizeController : ControllerBase
@@ -86,9 +87,9 @@ namespace CatalogAPI.Controllers
             // informacoes do usuario definidas
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email),
-            new Claim("myPet", "Chico"),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email),
+                new Claim("myPet", "Chico"),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             // chave com base em um algoritmo simetrico

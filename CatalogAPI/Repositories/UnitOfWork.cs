@@ -4,8 +4,8 @@ namespace CatalogAPI.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private ProductRepository _prodRepos;
-        private CategoryRepository _categoryRepos;
+        private ProductRepository? _prodRepos;
+        private CategoryRepository? _categoryRepos;
         public CatalogAppDbContext _context;
 
         public UnitOfWork(CatalogAppDbContext context)

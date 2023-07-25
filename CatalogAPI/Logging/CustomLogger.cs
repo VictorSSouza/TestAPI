@@ -28,9 +28,9 @@
             WriteTextInFile(message);
         }
 
-        private void WriteTextInFile(string message)
+        private static void WriteTextInFile(string message)
         {
-            // Para teste pode ser utilizado "c:\"
+            // Para teste pode ser utilizado "c:\pastateste\logteste.txt"
             string filePathLog = @"c:\temp\log\Victor_log.txt"; // define onde o logs vão ser escritos
             using (StreamWriter sw = new StreamWriter(filePathLog, true)) 
             {

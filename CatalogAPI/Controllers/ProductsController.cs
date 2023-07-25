@@ -10,6 +10,8 @@ using System.Text.Json;
 
 namespace CatalogAPI.Controllers
 {
+    [ApiConventionType(typeof(DefaultApiConventions))]
+    [Produces("application/json")]
     [Route("[controller]")]
     [ApiController]
     // para ativar o cors comente a linha abaixo com '//' antes do primeiro '['
@@ -53,7 +55,7 @@ namespace CatalogAPI.Controllers
                 {
                     return NotFound("Produtos não localizados!");
                 }
-
+                // dados anonimizados para criar uma response customizada no header para paginacao
                 var metadata = new
                 {
                     products.TotalCount,
