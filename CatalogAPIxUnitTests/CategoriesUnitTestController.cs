@@ -53,6 +53,30 @@ namespace CatalogAPIxUnitTests
         }
 
         // Testes Unitários
+        // Método GetCategoriesProducts
+        // GETCategoriesProducts - OkResult
+        [Fact]
+        public async void GetCategoriesProducts_Return_OkResult()
+        {
+            // Arrange == preparacao
+            var controller = new CategoriesController(_context, _mapper);
+            // Act = Execucao
+            var data = await controller.GetCategoriesProducts();
+            // Assert = verificacao do retorno
+            Assert.IsType<List<CategoryDTO>>(data.Value);
+        }
+
+        // GETCategoriesProducts - StatusCodeResult
+        [Fact]
+        public async void GetCategoriesProducts_Return_StatusCodeResult()
+        {
+            // Arrange == preparacao
+            var controller = new CategoriesController(_context, _mapper);
+            // Act = Execucao
+            var data = await controller.GetCategoriesProducts();
+            // Assert = verificacao do retorno
+            Assert.IsType<ObjectResult>(data.Result);
+        }
         // Método GET
         // Para realizar os testes GET é necessário comentar '//' em CategoriesController line 86 
         [Fact]

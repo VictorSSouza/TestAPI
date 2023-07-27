@@ -47,7 +47,6 @@ namespace CatalogAPI.Controllers
             {
                 var categoriesP = await _uow.CategoryRepository.GetCategoriesProducts();
 		        var categoriesPDTO = _mapper.Map<List<CategoryDTO>>(categoriesP);
-		
 		        return categoriesPDTO;
             }
             catch (Exception)
