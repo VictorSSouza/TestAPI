@@ -83,10 +83,9 @@ namespace CatalogAPI.Controllers
                     categories.HasNext,
                     categories.HasPrevious
                 };
-                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
+                // Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
                 
 		        var categoriesDTO = _mapper.Map<List<CategoryDTO>>(categories);
-
                 return categoriesDTO;
             }
             catch (Exception)
@@ -118,6 +117,7 @@ namespace CatalogAPI.Controllers
 		
 		        var categoryDTO = _mapper.Map<CategoryDTO>(category);
                 return Ok(categoryDTO);
+                //return categoryDTO;
             }
             catch (Exception)
             {
@@ -156,7 +156,6 @@ namespace CatalogAPI.Controllers
 		        var category = _mapper.Map<Category>(categoryDTO);
                 _uow.CategoryRepository.Add(category);
                 await _uow.Commit();
-
 		        var categoryDto = _mapper.Map<CategoryDTO>(category);
 
                 return new CreatedAtRouteResult("ObterCategoria", new { id = category.Id }, categoryDto);

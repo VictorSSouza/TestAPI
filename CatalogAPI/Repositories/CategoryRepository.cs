@@ -12,7 +12,7 @@ namespace CatalogAPI.Repositories
         }
         public async Task<PagedList<Category>> GetCategories(CategoriesParameters parameters)
         {
-            return await PagedList<Category>.ToPagedList(Get().OrderBy(x => x.Name), parameters.PageSize, parameters.PageNumber);
+            return await PagedList<Category>.ToPagedList(Get().OrderBy(x => x.Id), parameters.PageSize, parameters.PageNumber);
         }
         public async Task<IEnumerable<Category>> GetCategoriesProducts()
         {

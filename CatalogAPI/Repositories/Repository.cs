@@ -35,7 +35,7 @@ namespace CatalogAPI.Repositories
 
         public async Task<T> GetById(Expression<Func<T, bool>> predicate)
         {
-            return await _context.Set<T>().SingleOrDefaultAsync(predicate);
+            return await _context.Set<T>().AsNoTracking().SingleOrDefaultAsync(predicate);
         }
 
         
