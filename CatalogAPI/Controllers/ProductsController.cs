@@ -34,9 +34,19 @@ namespace CatalogAPI.Controllers
 	    //[EnableCors("PermitirApiRequest")] // request apenas nesse metodo
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsPerPrice()
         {
-            var products = await _uow.ProductRepository.GetProductsPerPrice();
-            var productsDTO = _mapper.Map<List<ProductDTO>>(products);
-            return productsDTO;
+            try
+            {
+                var products = await _uow.ProductRepository.GetProductsPerPrice();
+                var productsDTO = _mapper.Map<List<ProductDTO>>(products);
+
+                return productsDTO;
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                  "Ocorreu um problema ao tratar sua solicitação.");
+            }
         }
 
 	    /// <summary>

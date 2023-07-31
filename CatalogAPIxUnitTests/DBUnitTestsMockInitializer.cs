@@ -18,7 +18,7 @@ namespace CatalogAPIxUnitTests
         public void Seed(CatalogAppDbContext context)
         {
             context.Categories.Add
-                (new Category{ Id = 993, Name = "Bebidas 1000-7", ImageUrl = "bebidas993.png" });
+                (new Category { Id = 1, Name = "Bebidas 1000-7", ImageUrl = "bebidas993.png" });
             context.Categories.Add
                 (new Category { Id = 2, Name = "Sorvetes", ImageUrl = "sorvetes1.png" });
             context.Categories.Add
@@ -35,6 +35,90 @@ namespace CatalogAPIxUnitTests
                 (new Category { Id = 8, Name = "Sucos", ImageUrl = "sucos1.png" });
             context.Categories.Add
                 (new Category { Id = 9, Name = "Tortas", ImageUrl = "tortas1.png" });
+
+            context.Products.Add
+            (new Product
+            {
+                Id = 1,
+                Name = "Cafeeeeeé",
+                Description = "café puro",
+                ImageUrl = "cafe1.png",
+                Price = 7,
+                Amount = 100,
+                DateRegistration = DateTime.Now
+            });
+            context.Products.Add
+            (new Product
+            {
+                Id = 10,
+                Name = "Cervejinha",
+                Description = "cerveja no copo",
+                ImageUrl = "cervejacopo1.png",
+                Price = 11,
+                Amount = 500,
+                DateRegistration = DateTime.Now,
+                CategoryId = 993
+            });
+            context.Products.Add
+            (new Product
+            {
+                Id = 2,
+                Name = "Sorvete na casquinha",
+                Description = "sorvete na casquinha comestivel",
+                ImageUrl = "sorvetecosquinha.png",
+                Price = 8,
+                Amount = 90,
+                DateRegistration = DateTime.Now,
+                CategoryId = 2
+            });
+            context.Products.Add
+            (new Product
+            {
+                Id = 3,
+                Name = "Sorvete na taça",
+                Description = "sorvete na taça de vidro",
+                ImageUrl = "sorvetetaca.png",
+                Price = 11,
+                Amount = 70,
+                DateRegistration = DateTime.Now,
+                CategoryId = 2
+            });
+            context.Products.Add
+            (new Product
+            {
+                Id = 4,
+                Name = "Bolo de morango",
+                Description = "bolo de morango hummmmm",
+                ImageUrl = "bolomorango.png",
+                Price = 70,
+                Amount = 10,
+                DateRegistration = DateTime.Now,
+                CategoryId = 5
+            });
+            context.Products.Add
+            (new Product
+            {
+                Id = 5,
+                Name = "Bolo de cenoura",
+                Description = "bolo de cenoura com cobertura de chocolate",
+                ImageUrl = "bolocenoura.png",
+                Price = 70,
+                Amount = 8,
+                DateRegistration = DateTime.Now,
+                CategoryId = 5
+            });
+            context.Products.Add
+            (new Product
+            {
+                Id = 6,
+                Name = "Pastel de frango",
+                Description = "pastel de frango hummmmm",
+                ImageUrl = "pastelfrango.png",
+                Price = 6,
+                Amount = 40,
+                DateRegistration = DateTime.Now,
+                CategoryId = 4
+            });
 
             context.SaveChanges();
         }

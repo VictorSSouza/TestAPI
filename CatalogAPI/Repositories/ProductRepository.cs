@@ -17,7 +17,7 @@ namespace CatalogAPI.Repositories
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize)
                 .ToList(); */
-            return await PagedList<Product>.ToPagedList(Get().OrderBy(x => x.Name), parameters.PageSize, parameters.PageNumber);
+            return await PagedList<Product>.ToPagedList(Get().OrderBy(x => x.Id), parameters.PageSize, parameters.PageNumber);
 
         }
         public async Task<IEnumerable<Product>> GetProductsPerPrice()
